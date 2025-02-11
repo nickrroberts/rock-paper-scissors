@@ -48,9 +48,9 @@ userInput.addEventListener('keydown', (event) => {
 async function handleGame() {
     if (!gameActive) return; // Prevent interactions after game ends
 
-    let userChoice = await userMove();
-    let computerChoice = computerMove();
-    let result = decideWinner(userChoice, computerChoice);
+    let userChoice = await getUserMove();
+    let computerChoice = getComputerMove();
+    let result = getWinner(userChoice, computerChoice);
     updateScore(result);
     displayResult(result);
 
@@ -62,12 +62,13 @@ async function handleGame() {
 
 
 //Ask user for their move
-function userMove() {
+function getUserMove() {
     return new Promise( resolve => {
 
         function handleInput () {
-            //normalize any weird case in the submission
-            let userMove = userInput.value.toLowerCase();
+            
+            let userMove = userInput.value.toLowerCase(); //normalize any weird casse in the submission
+            
             if (["rock", "paper", "scissors"].includes(userMove)) {
                 console.log(`User move: ${userMove}`);
                 userInput.value = "";
@@ -80,8 +81,7 @@ function userMove() {
     });
 }
 
-//Select a move randomly between three values cases
-function computerMove() {
+function getComputerMove() {
     let randomNum = Math.random();
     let computerMove = "";
     //Based on the value, match to a move
@@ -101,12 +101,11 @@ function computerMove() {
     return computerMove;
 }
 
-//Select a winner of the round and update the score
-function decideWinner (userChoice, computerChoice) {
+
+function getWinner (userChoice, computerChoice) {
     if (winConditions[userChoice] == computerChoice) {
         return 'player'
     } 
-      //If equivalent, say tie
     else if (userChoice == computerChoice) { 
         return 'tie'
     }
@@ -135,7 +134,6 @@ function displayResult (result) {
 
 }
 
-//Set win or loss based on winning or losing three out of five rounds
 function checkWin () {
     if (userScore > 2) {
         return 'playerWin';
@@ -146,18 +144,16 @@ function checkWin () {
     else { return 'continue'}
 }
 
-// Function to open the modal with a message
+// Game result modal
 function openModal(message) {
-    modalMessage.textContent = message; // Set modal message
-    modal.style.display = "flex"; // Show modal
+    modalMessage.textContent = message; 
+    modal.style.display = "flex"; 
 }
 
-// Function to close the modal
 function closeModal() {
     modal.style.display = "none";
 }
 
-// Close modal when the close button is clicked
 closeButton.addEventListener("click", closeModal);
 
 // Close modal when clicking outside the modal content
