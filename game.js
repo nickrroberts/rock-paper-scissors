@@ -32,18 +32,22 @@ function startGame() {
 }
 //Ask user for their move
 function userMove() {
-    let userMove; 
-    while (true) {
-        userMove = prompt("Pick your move out of 'Rock, 'Paper', or 'Scissors'").toLowerCase();
-        if (userMove == 'rock' || userMove == 'paper' || userMove == 'scissors') {
-            console.log(`User move: ${userMove}`);
-            return userMove;
-        }
-        else { 
-            alert("Please choose a valid answer (this is sensitive to typos)");
-        }
+    let userMove = prompt("Pick your move: 'Rock', 'Paper', or 'Scissors'");
+    
+    if (userMove === null) {
+        console.log("User exited the game."); // Handle prompt exits
+        return null; 
     }
 
+    userMove = userMove.toLowerCase();
+
+    if (["rock", "paper", "scissors"].includes(userMove)) {
+        console.log(`User move: ${userMove}`);
+        return userMove;
+    } else {
+        alert("Invalid choice. Please enter 'Rock', 'Paper', or 'Scissors'.");
+        return userMove(); 
+    }
 }
 
 //Select a move randomly between three values cases
@@ -69,7 +73,6 @@ function computerMove() {
 
 //Select a winner of the round and update the score
 function decideRoundWinnerAndScore (userChoice, computerChoice) {
-    console.log(`Deciding winner with user choice of ${userChoice} and ${computerChoice} `);
     //Define win conditions
     const winConditions = {
         rock: "scissors",
@@ -78,8 +81,7 @@ function decideRoundWinnerAndScore (userChoice, computerChoice) {
       };
 
     if (winConditions[userChoice] == computerChoice) {
-        userScore++;
-        console.log(`You win! The new score is you: ${userScore} and the computer: ${computerScore}`);
+        console.log(`You win! The new score is you: ${++userScore} and the computer: ${computerScore}`);
       } 
       //If equivalent, say tie
     else if (userChoice == computerChoice) { 
@@ -87,8 +89,7 @@ function decideRoundWinnerAndScore (userChoice, computerChoice) {
     }
       
     else {
-        computerScore++;
-        console.log(`You lose! The new score is you: ${userScore} and the computer: ${computerScore}`);
+        console.log(`You lose! The new score is you: ${userScore} and the computer: ${++computerScore}`);
       }
 
       checkWin();
