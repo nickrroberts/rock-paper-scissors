@@ -4,11 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rock Paper Scissors 🎮</title>
-    
     <style>
         /* Import a fun Google Font */
         @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-
         /* General Page Styling */
         html, body {
             height: 100%;
@@ -21,7 +19,6 @@
             justify-content: center;
             align-items: center;
         }
-
         input, .submit {
             font-family: 'Press Start 2P', cursive;
         }
@@ -33,12 +30,10 @@
             color: #ff5722;
             text-shadow: 2px 2px #ff9800;
         }
-
         p {
             font-size: 16px;
             color: #222;
         }
-
         /* Add Fun Icons for Rock, Paper, Scissors */
         .icons {
             font-size: 50px;
@@ -47,16 +42,13 @@
             justify-content: center;
             gap: 20px;
         }
-
         .icon {
             cursor: pointer;
             transition: transform 0.3s ease-in-out;
         }
-
         .icon:hover {
             transform: scale(1.2) rotate(10deg);
         }
-
         /* Play Button Styling */
         input, .submit {
             font-size: 20px;
@@ -72,21 +64,17 @@
             box-sizing: border-box;
             margin-bottom: 20px;
         }
-
         .submit {
             background-color: #ff5722;
             color: white;
         }
-
         .submit:hover {
             background-color: #ff9800;
             transform: scale(1.1);
         }
-
         .submit:active {
             transform: scale(0.95);
         }
-
         /* Modal Background */
         .modal {
             display: none; /* Hidden by default */
@@ -100,7 +88,6 @@
             justify-content: center;
             align-items: center;
         }
-
         /* Modal Content */
         .modal-content {
             background-color: white;
@@ -110,7 +97,6 @@
             width: 300px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
-
         /* Close Button */
         .close {
             position: absolute;
@@ -119,7 +105,6 @@
             font-size: 24px;
             cursor: pointer;
         }
-
         /* Responsive for Small Screens */
         @media (max-width: 600px) {
             body {
@@ -140,7 +125,6 @@
                 width: 100%
             }
         }
-        
     </style>
 </head>
 <body>
@@ -168,8 +152,6 @@
             <p id="modal-message">You won this round! 🎉</p>
         </div>
     </div>
-
     <script src="game.js"></script>
-
 </body>
 </html>
