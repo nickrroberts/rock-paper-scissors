@@ -21,8 +21,12 @@
             justify-content: center;
             align-items: center;
         }
+
+        input, .submit {
+            font-family: 'Press Start 2P', cursive;
+        }
         .container {
-            width: 100%;
+            width: 50%;
         }
         h1 {
             font-size: 28px;
@@ -38,7 +42,7 @@
         /* Add Fun Icons for Rock, Paper, Scissors */
         .icons {
             font-size: 50px;
-            margin: 20px;
+            margin: 20px 20px 50px 20px;
             display: flex;
             justify-content: center;
             gap: 20px;
@@ -54,25 +58,67 @@
         }
 
         /* Play Button Styling */
-        .ready {
+        input, .submit {
             font-size: 20px;
             padding: 15px 30px;
-            background-color: #ff5722;
             border: none;
             border-radius: 10px;
-            color: white;
             cursor: pointer;
             transition: 0.3s;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
         }
+        input {
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
 
-        .ready:hover {
+        .submit {
+            background-color: #ff5722;
+            color: white;
+        }
+
+        .submit:hover {
             background-color: #ff9800;
             transform: scale(1.1);
         }
 
-        .ready:active {
+        .submit:active {
             transform: scale(0.95);
+        }
+
+        /* Modal Background */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 300px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Close Button */
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
         }
 
         /* Responsive for Small Screens */
@@ -86,25 +132,42 @@
             .icons {
                 font-size: 40px;
             }
-            .ready {
+            input, .submit {
                 font-size: 18px;
                 padding: 10px 20px;
             }
+
+            .container {
+                width: 100%
+            }
         }
+        
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Rock Paper Scissors ✊✋✌️</h1>
-        <p>Pit yourself against your browser! Open your console, then click the button below to play.</p>
-        <p><i>It doesn't work on mobile yet, sorry :|</i></p>
+        <p>Pit yourself against your browser in a best-of-five matchup! Enter a value below to play</p>
         <div class="icons">
             <span class="icon">✊</span>
             <span class="icon">✋</span>
             <span class="icon">✌️</span>
         </div>
-        <button class="ready">🚀 Play Game</button>
-
+        <p>Type 'Rock', 'Paper', or 'Scissors'</p>
+        <input id="entry">
+        <button class="submit">🚀 Submit move</button>
+        <h2>Score</h2>
+        <h3 id="human-score">Human: 0</h3>
+        <h3 id="computer-score">Computer: 0</h3>
+        <h1 id="message"></h1>
+    </div>
+    <!-- Modal -->
+    <div id="gameModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Game Result</h2>
+            <p id="modal-message">You won this round! 🎉</p>
+        </div>
     </div>
 
     <script src="game.js"></script>

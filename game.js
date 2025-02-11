@@ -11,43 +11,73 @@ console.log (`
       (____)          (_____)      (____)
 ---.__(___)      ---.________)  ---.__(___)
     
-    Welcome! This is a best-of-five matchup against your browser to see who rules the console. 
-    
-    Click the 'Play Game' button to start.
-    
     `);
-
-//Ask ready to play? Have user hit the button to start
-const readyButton = document.querySelector('.ready');
-readyButton.addEventListener('click', startGame);
 
 let userScore = 0;
 let computerScore = 0;
+let userChoice;
+let computerChoice;
+const winConditions = {
+    rock: "scissors",
+    paper: "rock",
+    scissors: "paper"
+  };
+const resultMessages = {
+    player: "You win the round! 🎉",
+    computer: "Computer wins the round. 🤖",
+    tie: "It's a tie! 😐",
+    playerWin: "That's best of five! Congrats, you win the game! Refresh to play again.",
+    computerWin: "That's best of five. Sorry, you lose to the machine. Refresh to play again." 
 
-function startGame() {
-    let userChoice = userMove();
-    if (userChoice === null) return; // Exit if user cancels
+};
+let gameActive = true; // Track game state
+const playButton = document.querySelector(".submit");
+const userInput = document.getElementById("entry")
+const modal = document.getElementById("gameModal");
+const modalMessage = document.getElementById("modal-message");
+const closeButton = document.querySelector(".close");
+
+
+playButton.addEventListener('click', handleGame);
+userInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+        handleGame();
+    }
+});
+
+async function handleGame() {
+    if (!gameActive) return; // Prevent interactions after game ends
+
+    let userChoice = await userMove();
     let computerChoice = computerMove();
-    decideRoundWinnerAndScore(userChoice, computerChoice);
+    let result = decideWinner(userChoice, computerChoice);
+    updateScore(result);
+    displayResult(result);
+
+    if (checkWin() !== 'continue') {
+        gameActive = false; // Stop the game once someone wins
+        displayResult(checkWin()); // Show final message
+    }
 }
+
+
 //Ask user for their move
 function userMove() {
-    let userMove = prompt("Pick your move: 'Rock', 'Paper', or 'Scissors'");
-    
-    if (userMove === null) {
-        console.log("User exited the game."); // Handle prompt exits
-        return null; 
-    }
+    return new Promise( resolve => {
 
-    userMove = userMove.toLowerCase();
-
-    if (["rock", "paper", "scissors"].includes(userMove)) {
-        console.log(`User move: ${userMove}`);
-        return userMove;
-    } else {
-        alert("Invalid choice. Please enter 'Rock', 'Paper', or 'Scissors'.");
-        return userMove(); 
-    }
+        function handleInput () {
+            //normalize any weird case in the submission
+            let userMove = userInput.value.toLowerCase();
+            if (["rock", "paper", "scissors"].includes(userMove)) {
+                console.log(`User move: ${userMove}`);
+                userInput.value = "";
+                resolve(userMove);
+            } else {
+                alert("Invalid choice. Please enter 'Rock', 'Paper', or 'Scissors'.");
+            }
+        }
+        handleInput();
+    });
 }
 
 //Select a move randomly between three values cases
@@ -72,43 +102,69 @@ function computerMove() {
 }
 
 //Select a winner of the round and update the score
-function decideRoundWinnerAndScore (userChoice, computerChoice) {
-    //Define win conditions
-    const winConditions = {
-        rock: "scissors",
-        paper: "rock",
-        scissors: "paper"
-      };
-
+function decideWinner (userChoice, computerChoice) {
     if (winConditions[userChoice] == computerChoice) {
-        console.log(`You win! The new score is you: ${++userScore} and the computer: ${computerScore}`);
-      } 
+        return 'player'
+    } 
       //If equivalent, say tie
     else if (userChoice == computerChoice) { 
-        console.log("Tie! Scores have not changed.");
+        return 'tie'
     }
-      
     else {
-        console.log(`You lose! The new score is you: ${userScore} and the computer: ${++computerScore}`);
-      }
+        return 'computer'
+    }
+}
 
-      checkWin();
+function updateScore (result) {
+    if (result == 'player') {
+        document.getElementById("human-score").textContent = `Human: ${++userScore}`;
+    }
+    if (result == 'computer') {
+        document.getElementById("computer-score").textContent = `Computer: ${++computerScore}`;
+    }
+}
+
+function displayResult (result) {
+    document.getElementById("message").textContent = resultMessages[result];
+    if (result=='playerWin') {
+        openModal("🎉 You won the game! 🎉");
+    }
+    if (result=='computerWin') {
+        openModal("🤖 Computer won the game 🤖");
+    }
 
 }
 
 //Set win or loss based on winning or losing three out of five rounds
 function checkWin () {
     if (userScore > 2) {
-        console.log("That's best of five! Congrats, you win the game!")
+        return 'playerWin';
     }
     if (computerScore > 2) {
-        console.log("That's best of five. Sorry, you lose to the machine. ")
+        return 'computerWin';
     }
-    else { 
-        userChoice = userMove();
-        computerChoice = computerMove();
-        decideRoundWinnerAndScore(userChoice, computerChoice);
-    }
+    else { return 'continue'}
 }
 
-//Play again?
+// Function to open the modal with a message
+function openModal(message) {
+    modalMessage.textContent = message; // Set modal message
+    modal.style.display = "flex"; // Show modal
+}
+
+// Function to close the modal
+function closeModal() {
+    modal.style.display = "none";
+}
+
+// Close modal when the close button is clicked
+closeButton.addEventListener("click", closeModal);
+
+// Close modal when clicking outside the modal content
+window.addEventListener("click", (event) => {
+    if (event.target === modal) {
+        closeModal();
+    }
+});
+
+
